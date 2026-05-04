@@ -7,9 +7,9 @@
 
 ## The Mission
 
-Agrigentech's previous web presence was built on Wix. A site audit identified three compounding problems: poor Core Web Vitals scores driven by unoptimized JS bundles, near-zero crawlability for dynamic content, and no path to custom backend integration for wholesale inquiry management.
+Agrigentech's previous web presence was a Wix site built by a prior party. I was brought in specifically to engineer a custom migration to Next.js — tasked with solving three compounding bottlenecks identified in the initial audit: poor Core Web Vitals scores from unoptimized JS bundles, near-zero crawlability for dynamic content, and no path to a custom backend for wholesale inquiry management.
 
-This project is the full technical migration — rebuilt from scratch on Next.js with the App Router, a feature-based codebase architecture, and a Firestore-ready data layer. The goal is a platform that earns organic traffic on high-intent B2B search terms while giving the operations team a structured foundation to extend.
+This is a ground-up rebuild on Next.js 16 with the App Router, a feature-based codebase architecture, and a Firestore-ready data layer. The goal is a platform that earns organic traffic on high-intent B2B search terms while giving the operations team a structured, extensible foundation to build on.
 
 ---
 
@@ -148,6 +148,25 @@ The Wix audit surfaced two root causes for poor search performance:
 - [ ] Structured data (JSON-LD) for `Product` and `Organization` schema
 - [ ] Mobile navigation drawer for the Navbar
 - [ ] Vercel Analytics integration for Core Web Vitals tracking
+
+---
+
+## Personal Reflection
+
+This project marks my official transition from UI-focused work into full-stack engineering.
+
+My background coming in was frontend — I understood components, layouts, and styling, but my mental model stopped at the browser. This engagement changed that. Being handed a real business problem (a broken Wix site serving actual wholesale buyers) and asked to rebuild it properly forced me to think in systems, not just screens.
+
+The shift that mattered most was learning to think about the full application lifecycle. On the frontend, every decision I'd previously made was isolated — a component either looked right or it didn't. Here I had to hold multiple layers in my head simultaneously: how a server component reduces the JS bundle shipped to the client, how Firestore document structure will determine what queries are even possible, how an unprotected API route becomes a billing vulnerability the moment it's deployed. These aren't frontend concerns. They're architectural ones.
+
+The specific areas I focused on deepening during this build:
+
+- **Server vs. client rendering.** Understanding when to reach for `"use client"` and the real cost of doing so unnecessarily — not just as a rule to follow, but as a performance decision.
+- **Database schema design.** Structuring the `ProduceGrid` data shape so it maps directly to a Firestore document without a transformation layer — writing the frontend and the schema at the same time.
+- **Credential security.** Separating `NEXT_PUBLIC_*` keys (safe to expose to the browser) from server-only keys (never shipped to the client), and ensuring nothing sensitive reaches the repository.
+- **Feature architecture.** Moving from "where does this file go?" to "what does this module own?" — a question that only makes sense once you're building something meant to last.
+
+I'm using this real-world client project deliberately as the vehicle for mastering the full lifecycle of a modern application. The Wix site was a constraint. Building past it is the point.
 
 ---
 
