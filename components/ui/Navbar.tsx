@@ -109,28 +109,6 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="mt-auto flex items-center gap-5 px-8 py-6" style={{ borderTop: '1px solid #d4c9a8' }}>
-          <a
-            href="https://www.instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="transition-colors duration-200 hover:text-[#b8860b]"
-            style={{ color: '#1a3a22' }}
-          >
-            <Instagram size={22} strokeWidth={1.75} />
-          </a>
-          <a
-            href="https://www.linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="transition-colors duration-200 hover:text-[#b8860b]"
-            style={{ color: '#1a3a22' }}
-          >
-            <Linkedin size={22} strokeWidth={1.75} />
-          </a>
-        </div>
       </aside>
     </>
   );
