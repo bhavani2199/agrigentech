@@ -60,7 +60,7 @@ function ProductCard({ product }: { product: Product }) {
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white"
             style={{
-              backgroundColor: '#25d366',
+              backgroundColor: '#b8860b',
               opacity: hovered ? 1 : 0,
               transform: hovered ? 'scale(1)' : 'scale(0.82)',
               transition: 'opacity 0.3s ease, transform 0.3s ease',
