@@ -62,20 +62,7 @@ export default function HeroCarousel() {
             justifyContent: 'center',
           }}
         >
-          {/* Icon */}
-          <div
-            className="mb-5 flex items-center justify-center rounded-2xl"
-            style={{
-              width: 72,
-              height: 72,
-              backgroundColor: 'rgba(26,58,34,0.07)',
-              border: '1.5px solid rgba(26,58,34,0.12)',
-              fontSize: 32,
-            }}
-          >
-            {slides[active].icon}
-          </div>
-
+          
           {/* Label */}
           <span
             className="mb-3 block text-xs font-semibold uppercase tracking-[0.2em]"
