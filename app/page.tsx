@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
+import HeroCarousel from '@/components/ui/HeroCarousel';
 import FeaturedProducts from '@/components/ui/FeaturedProducts';
 import RetailStores from '@/components/ui/RetailStores';
 
@@ -130,6 +131,8 @@ export default function Home() {
           />
         </div>
       </section>
+
+      <HeroCarousel />
 
       {/* Stats Banner */}
       <section style={{ backgroundColor: '#1a3a22' }}>
