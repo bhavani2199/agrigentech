@@ -4,19 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 
 const slides = [
   {
-    icon: '🌱',
     label: 'Who We Are',
     title: 'Cameron Highlands\' Finest Farm',
     body: 'Agrigentech Sdn Bhd is dedicated to providing quality agriculture — vegetables, flowers and pot plants grown on our 500+ acre farm. We build long-term relationships through quality service and customer support.',
   },
   {
-    icon: '🥦',
     label: 'What We Provide',
     title: '70+ Varieties, Delivered Daily',
     body: 'From fresh vegetables to beautiful cut flowers — all grown in Cameron Highlands and supplied daily to hotels, supermarkets and F&B groups across Malaysia with free chilled truck delivery.',
   },
   {
-    icon: '🏪',
     label: 'Our Retail Stores',
     title: '10+ Cameron Harvest Stores',
     body: 'Find us across Peninsular Malaysia — Sg Buloh, Kampung Baru, Pulau Pinang and more. Open Sunday to Friday, 9am–9pm. Farm-fresh produce straight to your community.',
