@@ -1,162 +1,47 @@
-'use client';
-
-import { useState, useEffect, useMemo, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import type { Metadata } from 'next';
 import Navbar from '@/components/ui/Navbar';
-import { supabase, type Product } from '@/lib/supabase/client';
 
-type Tab = 'vegetables' | 'flowers';
+export const metadata: Metadata = {
+  title: 'About Us | Agrigentech Sdn Bhd Cameron Highlands',
+  description:
+    'Learn about Agrigentech — a Cameron Highlands agricultural wholesale supplier with our own 500-acre farm supplying premium produce across Malaysia.',
+  alternates: { canonical: 'https://agrigentechsdnbhd.com/about' },
+  openGraph: {
+    title: 'About Us | Agrigentech Sdn Bhd Cameron Highlands',
+    description:
+      'Learn about Agrigentech — a Cameron Highlands agricultural wholesale supplier with our own 500-acre farm supplying premium produce across Malaysia.',
+    url: 'https://agrigentechsdnbhd.com/about',
+  },
+};
+import { MessageCircle, Leaf, Building2, Network } from 'lucide-react';
 
-const WA_BASE = 'https://wa.me/60102552554';
+const whyCards = [
+  {
+    icon: Leaf,
+    title: 'Farm Direct',
+    description:
+      'We own and operate our farm in Cameron Highlands ensuring freshness and quality control at every stage.',
+  },
+  {
+    icon: Building2,
+    title: 'B2B Specialists',
+    description:
+      'We understand wholesale requirements and deliver consistently to hotels, supermarkets and F&B groups.',
+  },
+  {
+    icon: Network,
+    title: '11 Group Companies',
+    description:
+      'Part of a group of 11 companies with deep roots in Malaysian agriculture and a proven track record.',
+  },
+];
 
-function ProductCardSkeleton() {
-  return (
-    <div className="flex flex-col rounded-2xl overflow-hidden" style={{ backgroundColor: '#fff', border: '1px solid #e8e0d0' }}>
-      <div className="w-full animate-pulse" style={{ aspectRatio: '1 / 1', backgroundColor: '#e8e0d0' }} />
-      <div className="flex flex-col p-4 gap-2.5">
-        <div className="animate-pulse rounded h-5 w-3/4" style={{ backgroundColor: '#e8e0d0' }} />
-        <div className="animate-pulse rounded h-4 w-1/3" style={{ backgroundColor: '#e8e0d0' }} />
-      </div>
-    </div>
-  );
-}
-
-function ProductCard({ product }: { product: Product }) {
-  const [hovered, setHovered] = useState(false);
-  const waLink = `${WA_BASE}?text=Hi%20Agrigentech%2C%20I%27d%20like%20to%20enquire%20about%20${encodeURIComponent(product.name)}`;
-  const priceLabel = product.price != null ? `RM ${Number(product.price).toFixed(2)} / ${product.unit ?? 'kg'}` : null;
-  const initial = product.name.charAt(0).toUpperCase();
-
-  return (
-    <div
-      className="flex flex-col rounded-2xl overflow-hidden"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        backgroundColor: '#fff',
-        border: '1px solid #e8e0d0',
-        borderRadius: 16,
-        boxShadow: hovered ? '0 10px 28px rgba(26,58,34,0.13)' : '0 1px 4px rgba(26,58,34,0.06)',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-      }}
-    >
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1', backgroundColor: '#fff' }}>
-        {product.image_url ? (
-          <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#f5f0e8' }}>
-            <span style={{ fontFamily: 'var(--font-playfair), serif', fontSize: 48, fontWeight: 700, color: '#1a3a22', opacity: 0.55 }}>
-              {initial}
-            </span>
-          </div>
-        )}
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ backgroundColor: hovered ? 'rgba(0,0,0,0.50)' : 'rgba(0,0,0,0)', transition: 'background-color 0.3s ease' }}
-        >
-          <a
-            href={waLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white"
-            style={{
-              backgroundColor: '#b8860b',
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? 'scale(1)' : 'scale(0.82)',
-              transition: 'opacity 0.3s ease, transform 0.3s ease',
-              pointerEvents: hovered ? 'auto' : 'none',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Chat with Us
-          </a>
-        </div>
-      </div>
-      <div className="flex flex-col gap-1" style={{ padding: 12 }}>
-        <p
-          className="truncate"
-          style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: 14, fontWeight: 600, color: '#1a3a22', lineHeight: 1.4 }}
-        >
-          {product.name}
-        </p>
-        {priceLabel ? (
-          <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: 13, fontWeight: 500, color: '#1a3a22' }}>
-            {priceLabel}
-          </p>
-        ) : (
-          <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: 13, fontWeight: 500, color: '#9a9a9a' }}>
-            Price updated daily
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ProductsContent() {
-  const searchParams = useSearchParams();
-  const search = searchParams.get('q') ?? '';
-
-  const [activeTab, setActiveTab] = useState<Tab>('vegetables');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // 1. Fetch products when active tab updates
-  useEffect(() => {
-    setLoading(true);
-    supabase
-      .from('products')
-      .select('*')
-      .eq('category', activeTab)
-      .order('name', { ascending: true })
-      .then(({ data }) => {
-        setProducts((data as Product[]) ?? []);
-        setLoading(false);
-      });
-  }, [activeTab]);
-
-  // 2. Automatically toggle tab if search results exist in the alternative tab
-  useEffect(() => {
-    if (!search.trim()) return;
-
-    const query = search.toLowerCase();
-    
-    const hasMatchesInCurrentTab = products.some(p => 
-      p.name.toLowerCase().includes(query)
-    );
-
-    if (!hasMatchesInCurrentTab && !loading) {
-      const alternateTab: Tab = activeTab === 'vegetables' ? 'flowers' : 'vegetables';
-
-      supabase
-        .from('products')
-        .select('id, name')
-        .eq('category', alternateTab)
-        .then(({ data }) => {
-          const hasMatchesInAlternateTab = data?.some(p => 
-            p.name.toLowerCase().includes(query)
-          );
-
-          if (hasMatchesInAlternateTab) {
-            setActiveTab(alternateTab);
-          }
-        });
-    }
-  }, [search, products, loading, activeTab]);
-
-  // 3. Filter current products array for screen render
-  const filtered = useMemo(() => {
-    if (!search.trim()) return products;
-    const q = search.toLowerCase();
-    return products.filter((p) => p.name.toLowerCase().includes(q));
-  }, [products, search]);
-
+export default function AboutPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f5f0e8' }}>
       <Navbar />
 
-      {/* Hero Banner Section (Matches About Page Styling) */}
+      {/* Hero Banner */}
       <section
         className="relative flex items-center justify-center overflow-hidden"
         style={{ minHeight: 340, backgroundColor: '#1a3a22' }}
@@ -175,12 +60,12 @@ function ProductsContent() {
           className="absolute inset-0"
           style={{ background: 'linear-gradient(180deg, rgba(26,58,34,0.7) 0%, rgba(26,58,34,0.55) 100%)' }}
         />
-        <div className="relative z-10 mx-auto max-w-3xl px-6 pt-36 pb-20 text-center">
+        <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center">
           <h1
             className="text-4xl font-bold text-white md:text-5xl"
             style={{ fontFamily: 'var(--font-playfair), serif', lineHeight: 1.2 }}
           >
-            Our Products
+            About Agrigentech
           </h1>
           <div
             className="mx-auto my-4 rounded-full"
@@ -190,73 +75,140 @@ function ProductsContent() {
             className="text-base md:text-lg"
             style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: 'rgba(245,240,232,0.85)' }}
           >
-            Premium vegetables and cut flowers grown fresh from our Cameron Highlands farm
+            Rooted in Cameron Highlands, Growing for Malaysia
           </p>
         </div>
       </section>
 
-      {/* Main Content Area */}
-      <main className="mx-auto max-w-7xl px-5 md:px-10 pt-12 pb-20">
-        
-        {/* Active search banner */}
-        {search.trim() && (
-          <p
-            className="text-center mb-8 text-sm"
-            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}
-          >
-            Showing results for <span style={{ color: '#1a3a22', fontWeight: 600 }}>"{search}"</span>
-          </p>
-        )}
+      {/* Section 1 — Our Story */}
+      <section className="mx-auto max-w-7xl px-5 md:px-10 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+          {/* Text */}
+          <div>
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.18em] mb-3"
+              style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#b8860b' }}
+            >
+              Our Story
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-5 leading-snug"
+              style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}
+            >
+              From Highland Soil to Your Business
+            </h2>
+            <div
+              className="mb-6 rounded-full"
+              style={{ width: 48, height: 3, backgroundColor: '#b8860b' }}
+            />
+            <p
+              className="text-base leading-relaxed"
+              style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e', lineHeight: 1.8 }}
+            >
+              Agrigentech Sdn. Bhd. is a Cameron Highlands based agricultural wholesale supplier operating our own
+              farm. We supply premium vegetables and cut flowers to hotels, supermarket chains, F&amp;B groups, and
+              exporters across Malaysia.
+            </p>
+          </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-10">
-          <div className="flex rounded-xl p-1 gap-1" style={{ backgroundColor: '#e8e0d0' }}>
-            {(['vegetables', 'flowers'] as Tab[]).map((tab) => {
-              const active = activeTab === tab;
-              return (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
-                  style={{
-                    fontFamily: 'var(--font-dm-sans), sans-serif',
-                    backgroundColor: active ? '#b8860b' : 'transparent',
-                    color: active ? '#fff' : '#1a3a22',
-                    boxShadow: active ? '0 2px 8px rgba(184,134,11,0.3)' : 'none',
-                  }}
-                >
-                  {tab === 'vegetables' ? 'Vegetables' : 'Cut Flowers'}
-                </button>
-              );
-            })}
+          {/* Placeholder image */}
+          <div
+            className="w-full rounded-2xl overflow-hidden flex items-center justify-center"
+            style={{ height: 320, backgroundColor: '#2d5e38' }}
+            aria-hidden="true"
+          >
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.3">
+              <rect x="8" y="8" width="56" height="56" rx="8" stroke="#f5f0e8" strokeWidth="2.5" />
+              <circle cx="36" cy="34" r="12" stroke="#f5f0e8" strokeWidth="2.5" />
+              <path d="M8 52l14-14 10 10 12-16 20 20" stroke="#f5f0e8" strokeWidth="2.5" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
+      </section>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
-          {loading
-            ? Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)
-            : filtered.map((product) => <ProductCard key={product.id} product={product} />)
-          }
+      {/* Section 2 — Why Choose Us */}
+      <section style={{ backgroundColor: '#fff', borderTop: '1px solid #e8e0d0', borderBottom: '1px solid #e8e0d0' }}>
+        <div className="mx-auto max-w-7xl px-5 md:px-10 py-20">
+          <div className="text-center mb-12">
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.18em] mb-3"
+              style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#b8860b' }}
+            >
+              Why Choose Us
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold"
+              style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}
+            >
+              Built for Wholesale, Trusted by Businesses
+            </h2>
+            <div
+              className="mx-auto mt-4 rounded-full"
+              style={{ width: 48, height: 3, backgroundColor: '#b8860b' }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {whyCards.map(({ icon: Icon, title, description }) => (
+              <div
+                key={title}
+                className="flex flex-col items-start rounded-2xl p-7 transition-shadow duration-300 hover:shadow-lg"
+                style={{ backgroundColor: '#f5f0e8', border: '1px solid #e8e0d0' }}
+              >
+                <div
+                  className="flex items-center justify-center rounded-xl mb-5"
+                  style={{ width: 48, height: 48, backgroundColor: '#1a3a22' }}
+                >
+                  <Icon size={22} strokeWidth={1.75} color="#b8860b" />
+                </div>
+                <h3
+                  className="text-xl font-semibold mb-3"
+                  style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}
+                >
+                  {title}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e', lineHeight: 1.75 }}
+                >
+                  {description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Empty state */}
-        {!loading && filtered.length === 0 && (
-          <p className="text-center py-16 text-base" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}>
-            {search.trim()
-              ? `No products found for "${search}"`
-              : 'No products available at the moment. Please check back soon.'}
-          </p>
-        )}
-      </main>
+      {/* Section 3 — CTA Banner */}
+      <section
+        className="flex items-center justify-center"
+        style={{ backgroundColor: '#1a3a22' }}
+      >
+        <div className="mx-auto max-w-2xl px-6 py-20 text-center">
+          <h2
+            className="text-3xl md:text-4xl font-bold text-white mb-8"
+            style={{ fontFamily: 'var(--font-playfair), serif' }}
+          >
+            Ready to partner with us?
+          </h2>
+          <a
+            href="https://wa.me/60102552554"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-lg px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:brightness-110 active:scale-95"
+            style={{
+              backgroundColor: '#b8860b',
+              color: '#fff',
+              fontFamily: 'var(--font-dm-sans), sans-serif',
+              letterSpacing: '0.04em',
+              boxShadow: '0 4px 18px rgba(184,134,11,0.35)',
+            }}
+          >
+            <MessageCircle size={18} strokeWidth={1.75} />
+            Enquire on WhatsApp
+          </a>
+        </div>
+      </section>
     </div>
-  );
-}
-
-export default function ProductsPage() {
-  return (
-    <Suspense fallback={null}>
-      <ProductsContent />
-    </Suspense>
   );
 }
