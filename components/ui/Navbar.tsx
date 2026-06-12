@@ -71,7 +71,8 @@ export default function Navbar() {
               size={14}
               className="absolute left-3 pointer-events-none"
               style={{ color: '#4a5c4e' }}
-            />
+            />  
+            
             <input
               type="text"
               value={desktopQuery}
