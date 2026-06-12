@@ -52,7 +52,7 @@ export default function Navbar() {
           boxShadow: scrolled ? '0 2px 16px 0 rgba(26,58,34,0.10)' : 'none',
         }}
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-10 gap-6">
+        <div className="mx-auto grid h-16 max-w-7xl grid-cols-3 items-center px-5 md:px-10">
           {/* Logo */}
           <Link href="/" className="inline-flex items-center select-none shrink-0">
             <Image
@@ -66,7 +66,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 justify-end">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -80,7 +80,7 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop search */}
-          <div className="hidden md:flex items-center relative">
+          <div className="hidden md:flex items-center justify-center relative">
             <Search
               size={14}
               className="absolute left-3 pointer-events-none"
