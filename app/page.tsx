@@ -19,7 +19,9 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-        <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20" }}
+        <section
+          className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20"       
+          style={{ background: 'linear-gradient(135deg, #1a3a22 0%, #2d5e38 100%)' }}
       >
         {/* Background image overlay */}
         <div
