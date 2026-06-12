@@ -96,13 +96,13 @@ function ProductCard({ product }: { product: Product }) {
 
 function ProductsContent() {
   const searchParams = useSearchParams();
-  // Directly read the 'q' parameter from the URL path set by your Navbar search
   const search = searchParams.get('q') ?? '';
 
   const [activeTab, setActiveTab] = useState<Tab>('vegetables');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // 1. Fetch products when active tab updates
   useEffect(() => {
     setLoading(true);
     supabase
@@ -116,6 +116,36 @@ function ProductsContent() {
       });
   }, [activeTab]);
 
+  // 2. Automatically toggle tab if search results exist in the alternative tab
+  useEffect(() => {
+    if (!search.trim()) return;
+
+    const query = search.toLowerCase();
+    
+    const hasMatchesInCurrentTab = products.some(p => 
+      p.name.toLowerCase().includes(query)
+    );
+
+    if (!hasMatchesInCurrentTab && !loading) {
+      const alternateTab: Tab = activeTab === 'vegetables' ? 'flowers' : 'vegetables';
+
+      supabase
+        .from('products')
+        .select('id, name')
+        .eq('category', alternateTab)
+        .then(({ data }) => {
+          const hasMatchesInAlternateTab = data?.some(p => 
+            p.name.toLowerCase().includes(query)
+          );
+
+          if (hasMatchesInAlternateTab) {
+            setActiveTab(alternateTab);
+          }
+        });
+    }
+  }, [search, products, loading, activeTab]);
+
+  // 3. Filter current products array for screen render
   const filtered = useMemo(() => {
     if (!search.trim()) return products;
     const q = search.toLowerCase();
@@ -138,7 +168,7 @@ function ProductsContent() {
           </p>
         </div>
 
-        {/* Active search banner - shows users what they queried via the Navbar */}
+        {/* Active search banner */}
         {search.trim() && (
           <p
             className="text-center mb-8 text-sm"
