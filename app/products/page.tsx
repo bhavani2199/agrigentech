@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/ui/Navbar';
 import { supabase, type Product } from '@/lib/supabase/client';
-import { Search } from 'lucide-react';
 
 type Tab = 'vegetables' | 'flowers';
 
@@ -60,7 +60,7 @@ function ProductCard({ product }: { product: Product }) {
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white"
             style={{
-              backgroundColor: '#b8860b',
+              backgroundColor: '#25d366',
               opacity: hovered ? 1 : 0,
               transform: hovered ? 'scale(1)' : 'scale(0.82)',
               transition: 'opacity 0.3s ease, transform 0.3s ease',
@@ -90,15 +90,16 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export default function ProductsPage() {
+function ProductsContent() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>('vegetables');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+
+  const search = searchParams.get('q') ?? '';
 
   useEffect(() => {
     setLoading(true);
-    setSearch('');
     supabase
       .from('products')
       .select('*')
@@ -119,7 +120,9 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f5f0e8' }}>
       <Navbar />
+
       <main className="mx-auto max-w-7xl px-5 md:px-10 pt-28 pb-20">
+        {/* Heading */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}>
             Our Products
@@ -130,20 +133,17 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        <div className="max-w-md mx-auto mb-7 relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#4a5c4e' }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="w-full rounded-xl pl-10 pr-4 py-3 text-sm outline-none"
-            style={{ backgroundColor: '#fff', border: '1.5px solid #d4c9a8', color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#1a3a22')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#d4c9a8')}
-          />
-        </div>
+        {/* Active search banner */}
+        {search.trim() && (
+          <p
+            className="text-center mb-8 text-sm"
+            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}
+          >
+            Showing results for <span style={{ color: '#1a3a22', fontWeight: 600 }}>"{search}"</span>
+          </p>
+        )}
 
+        {/* Tabs */}
         <div className="flex justify-center mb-10">
           <div className="flex rounded-xl p-1 gap-1" style={{ backgroundColor: '#e8e0d0' }}>
             {(['vegetables', 'flowers'] as Tab[]).map((tab) => {
@@ -167,6 +167,7 @@ export default function ProductsPage() {
           </div>
         </div>
 
+        {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
           {loading
             ? Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)
@@ -174,12 +175,26 @@ export default function ProductsPage() {
           }
         </div>
 
+        {/* Empty state */}
         {!loading && filtered.length === 0 && (
-          <p className="text-center py-16" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}>
-            {search.trim() ? `No products found for "${search}"` : 'No products available at the moment.'}
+          <p
+            className="text-center py-16 text-base"
+            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}
+          >
+            {search.trim()
+              ? `No products found for "${search}"`
+              : 'No products available at the moment. Please check back soon.'}
           </p>
         )}
       </main>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProductsContent />
+    </Suspense>
   );
 }
