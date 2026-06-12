@@ -52,7 +52,7 @@ export default function Navbar() {
           boxShadow: scrolled ? '0 2px 16px 0 rgba(26,58,34,0.10)' : 'none',
         }}
       >
-        <div className="mx-auto grid h-16 max-w-7xl grid-cols-3 items-center px-5 md:px-10">
+        <div className="mx-auto grid h-20 max-w-7xl grid-cols-3 items-center px-5 md:px-10">
           {/* Logo */}
           <Link href="/" className="inline-flex items-center select-none shrink-0">
             <Image
