@@ -52,8 +52,8 @@ export default function Navbar() {
           boxShadow: scrolled ? '0 2px 16px 0 rgba(26,58,34,0.10)' : 'none',
         }}
       >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-10 gap-6">
-          {/* Logo */}
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-10 gap-6">          
+        {/* Logo */}
           <Link href="/" className="inline-flex items-center select-none shrink-0">
             <Image
               src="/logo.png"
@@ -214,7 +214,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-6 py-5" style={{ borderBottom: '1px solid #d4c9a8' }}>
           <Link href="/" onClick={() => setDrawerOpen(false)}>
-            <Image src="/logo.png" alt="Agrigentech" width={110} height={36} style={{ objectFit: 'contain' }} />
+            <Image src="/logo.png" alt="Agrigentech" width={120} height={34} style={{ objectFit: 'contain' }} />
           </Link>
           <button
             onClick={() => setDrawerOpen(false)}
