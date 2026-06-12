@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
+import { Instagram, Linkedin, Menu, X } from 'lucide-react';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -37,7 +37,7 @@ export default function Navbar() {
             <Image
               src="/logo.png"
               alt="Agrigentech"
-              width={120}
+              width={150}
               height={40}
               style={{ objectFit: 'contain' }}
               priority
@@ -56,7 +56,30 @@ export default function Navbar() {
               </Link>
             ))}
           </nav>
-          
+
+          <div className="hidden md:flex items-center gap-4">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="transition-colors duration-200 hover:text-[#b8860b]"
+              style={{ color: '#1a3a22' }}
+            >
+              <Instagram size={20} strokeWidth={1.75} />
+            </a>
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="transition-colors duration-200 hover:text-[#b8860b]"
+              style={{ color: '#1a3a22' }}
+            >
+              <Linkedin size={20} strokeWidth={1.75} />
+            </a>
+          </div>
+
           <button
             className="flex md:hidden items-center justify-center rounded p-1.5 transition-colors duration-200 hover:bg-[#e8e0d0]"
             style={{ color: '#1a3a22' }}
@@ -109,6 +132,28 @@ export default function Navbar() {
           ))}
         </nav>
 
+        <div className="mt-auto flex items-center gap-5 px-8 py-6" style={{ borderTop: '1px solid #d4c9a8' }}>
+          <a
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="transition-colors duration-200 hover:text-[#b8860b]"
+            style={{ color: '#1a3a22' }}
+          >
+            <Instagram size={22} strokeWidth={1.75} />
+          </a>
+          <a
+            href="https://www.linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="transition-colors duration-200 hover:text-[#b8860b]"
+            style={{ color: '#1a3a22' }}
+          >
+            <Linkedin size={22} strokeWidth={1.75} />
+          </a>
+        </div>
       </aside>
     </>
   );
