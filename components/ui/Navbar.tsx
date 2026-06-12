@@ -58,8 +58,8 @@ export default function Navbar() {
             <Image
               src="/logo.png"
               alt="Agrigentech"
-              width={140}
-              height={56}
+              width={120}
+              height={40}
               style={{ objectFit: 'contain' }}
               priority
             />
