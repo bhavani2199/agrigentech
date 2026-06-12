@@ -166,7 +166,7 @@ export default function Navbar() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') submitSearch(mobileQuery);
                 }}
-                placeholder="Search products..."
+                placeholder="Looking for..."
                 className="w-full rounded-full text-sm outline-none"
                 style={{
                   paddingLeft: 34,
