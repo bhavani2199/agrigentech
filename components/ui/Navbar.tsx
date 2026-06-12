@@ -52,7 +52,7 @@ export default function Navbar() {
           boxShadow: scrolled ? '0 2px 16px 0 rgba(26,58,34,0.10)' : 'none',
         }}
       >
-        <div className="mx-auto grid h-20 max-w-7xl grid-cols-3 items-center px-5 md:px-10">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-10 gap-6">
           {/* Logo */}
           <Link href="/" className="inline-flex items-center select-none shrink-0">
             <Image
@@ -65,14 +65,27 @@ export default function Navbar() {
             />
           </Link>
 
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="nav-link relative text-sm font-medium transition-colors duration-200 hover:text-[#b8860b]"
+                style={{ color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
           {/* Desktop search */}
-          <div className="hidden md:flex items-center justify-center relative">
+          <div className="hidden md:flex items-center relative">
             <Search
               size={14}
               className="absolute left-3 pointer-events-none"
               style={{ color: '#4a5c4e' }}
-            />  
-            
+            />
             <input
               type="text"
               value={desktopQuery}
@@ -100,20 +113,6 @@ export default function Navbar() {
               onBlur={(e) => (e.currentTarget.style.borderColor = '#d4c9a8')}
             />
           </div>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8 justify-end">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="nav-link relative text-sm font-medium transition-colors duration-200 hover:text-[#b8860b]"
-                style={{ color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
 
           {/* Mobile: search icon + hamburger */}
           <div className="flex md:hidden items-center gap-1">
@@ -215,7 +214,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-6 py-5" style={{ borderBottom: '1px solid #d4c9a8' }}>
           <Link href="/" onClick={() => setDrawerOpen(false)}>
-            <Image src="/logo.png" alt="Agrigentech" width={120} height={40} style={{ objectFit: 'contain' }} />
+            <Image src="/logo.png" alt="Agrigentech" width={120} height={34} style={{ objectFit: 'contain' }} />
           </Link>
           <button
             onClick={() => setDrawerOpen(false)}
