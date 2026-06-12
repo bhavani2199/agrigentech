@@ -156,18 +156,48 @@ function ProductsContent() {
     <div className="min-h-screen" style={{ backgroundColor: '#f5f0e8' }}>
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-5 md:px-10 pt-28 pb-20">
-        {/* Heading */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3" style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}>
+      {/* Hero Banner Section (Matches About Page Styling) */}
+      <section
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{ minHeight: 340, backgroundColor: '#1a3a22' }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'url(https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.12,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(26,58,34,0.7) 0%, rgba(26,58,34,0.55) 100%)' }}
+        />
+        <div className="relative z-10 mx-auto max-w-3xl px-6 pt-36 pb-20 text-center">
+          <h1
+            className="text-4xl font-bold text-white md:text-5xl"
+            style={{ fontFamily: 'var(--font-playfair), serif', lineHeight: 1.2 }}
+          >
             Our Products
           </h1>
-          <div className="mx-auto mb-5" style={{ width: 72, height: 3, backgroundColor: '#b8860b', borderRadius: 999 }} />
-          <p className="text-base md:text-lg max-w-xl mx-auto" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}>
+          <div
+            className="mx-auto my-4 rounded-full"
+            style={{ width: 64, height: 3, backgroundColor: '#b8860b' }}
+          />
+          <p
+            className="text-base md:text-lg"
+            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: 'rgba(245,240,232,0.85)' }}
+          >
             Premium vegetables and cut flowers grown fresh from our Cameron Highlands farm
           </p>
         </div>
+      </section>
 
+      {/* Main Content Area */}
+      <main className="mx-auto max-w-7xl px-5 md:px-10 pt-12 pb-20">
+        
         {/* Active search banner */}
         {search.trim() && (
           <p
