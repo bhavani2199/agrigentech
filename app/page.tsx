@@ -19,7 +19,6 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section
         <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20" }}
       >
         {/* Background image overlay */}
