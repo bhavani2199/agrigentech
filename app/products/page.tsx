@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/ui/Navbar';
 import { supabase, type Product } from '@/lib/supabase/client';
-import { Search } from 'lucide-react';
 
 type Tab = 'vegetables' | 'flowers';
 
@@ -132,20 +131,6 @@ export default function ProductsPage() {
           <p className="text-base md:text-lg max-w-xl mx-auto" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e' }}>
             Premium vegetables and cut flowers grown fresh from our Cameron Highlands farm
           </p>
-        </div>
-
-        <div className="max-w-md mx-auto mb-7 relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#4a5c4e' }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="w-full rounded-xl pl-10 pr-4 py-3 text-sm outline-none"
-            style={{ backgroundColor: '#fff', border: '1.5px solid #d4c9a8', color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#1a3a22')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#d4c9a8')}
-          />
         </div>
 
         <div className="flex justify-center mb-10">
