@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/ui/Navbar';
 import { supabase, type Product } from '@/lib/supabase/client';
-import { Search } from 'lucide-react';
 
 type Tab = 'vegetables' | 'flowers';
 
@@ -97,17 +96,12 @@ function ProductCard({ product }: { product: Product }) {
 
 function ProductsContent() {
   const searchParams = useSearchParams();
-  const urlQuery = searchParams.get('q') ?? '';
+  // Directly read the 'q' parameter from the URL path set by your Navbar search
+  const search = searchParams.get('q') ?? '';
 
   const [activeTab, setActiveTab] = useState<Tab>('vegetables');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState(urlQuery);
-
-  // Sync state if URL query param changes directly
-  useEffect(() => {
-    setSearch(urlQuery);
-  }, [urlQuery]);
 
   useEffect(() => {
     setLoading(true);
@@ -144,7 +138,7 @@ function ProductsContent() {
           </p>
         </div>
 
-        {/* Active search banner */}
+        {/* Active search banner - shows users what they queried via the Navbar */}
         {search.trim() && (
           <p
             className="text-center mb-8 text-sm"
@@ -153,21 +147,6 @@ function ProductsContent() {
             Showing results for <span style={{ color: '#1a3a22', fontWeight: 600 }}>"{search}"</span>
           </p>
         )}
-
-        {/* Search Input Bar */}
-        <div className="max-w-md mx-auto mb-7 relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#4a5c4e' }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="w-full rounded-xl pl-10 pr-4 py-3 text-sm outline-none"
-            style={{ backgroundColor: '#fff', border: '1.5px solid #d4c9a8', color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#1a3a22')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#d4c9a8')}
-          />
-        </div>
 
         {/* Tabs */}
         <div className="flex justify-center mb-10">
