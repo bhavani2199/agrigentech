@@ -79,7 +79,7 @@ export default function Navbar() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') submitSearch(desktopQuery);
               }}
-              placeholder="Search products..."
+              placeholder="Looking for..."
               style={{
                 width: 200,
                 paddingLeft: 30,
