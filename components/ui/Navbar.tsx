@@ -64,21 +64,7 @@ export default function Navbar() {
               priority
             />
           </Link>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="nav-link relative text-sm font-medium transition-colors duration-200 hover:text-[#b8860b]"
-                style={{ color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
+          
           {/* Desktop search */}
           <div className="hidden md:flex items-center relative">
             <Search
@@ -113,6 +99,21 @@ export default function Navbar() {
               onBlur={(e) => (e.currentTarget.style.borderColor = '#d4c9a8')}
             />
           </div>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="nav-link relative text-sm font-medium transition-colors duration-200 hover:text-[#b8860b]"
+                style={{ color: '#1a3a22', fontFamily: 'var(--font-dm-sans), sans-serif' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
 
           {/* Mobile: search icon + hamburger */}
           <div className="flex md:hidden items-center gap-1">
