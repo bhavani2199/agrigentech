@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: 'About Us | Agrigentech Sdn Bhd Cameron Highlands',
   description:
     'Learn about Agrigentech — a Cameron Highlands agricultural wholesale supplier with our own 500-acre farm supplying premium produce across Malaysia.',
-  alternates: { canonical: 'https://agrigentech.vercel.app'/about' },
+  alternates: { canonical: 'https://agrigentech.vercel.app/about' },
   openGraph: {
     title: 'About Us | Agrigentech Sdn Bhd Cameron Highlands',
     description:
       'Learn about Agrigentech — a Cameron Highlands agricultural wholesale supplier with our own 500-acre farm supplying premium produce across Malaysia.',
-    url: 'https://agrigentech.vercel.app'/about',
+    url: 'https://agrigentech.vercel.app/about',
   },
 };
 import { MessageCircle, Leaf, Building2, Network } from 'lucide-react';
