@@ -7,9 +7,9 @@ import RetailStores from '@/components/ui/RetailStores';
 
 export const metadata: Metadata = {
   title: 'Agrigentech | Farm Fresh Wholesale Vegetables & Flowers Malaysia',
-  alternates: { canonical: 'https://agrigentechsdnbhd.com' },
+  alternates: { canonical: 'https://agrigentech.vercel.app' },
   openGraph: {
-    url: 'https://agrigentechsdnbhd.com',
+    url: 'https://agrigentech.vercel.app',
   },
 };
 
