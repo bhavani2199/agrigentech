@@ -170,62 +170,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ backgroundColor: '#f5f0e8' }}>
-        <div className="mx-auto max-w-6xl px-6 py-20 md:px-12 md:py-24">
-          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
-            <div
-              className="flex aspect-square w-full items-center justify-center rounded-2xl"
-              style={{ backgroundColor: '#2d5e38' }}
-            >
-              <span
-                className="text-sm uppercase tracking-[0.2em]"
-                style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'var(--font-dm-sans), sans-serif' }}
-              >
-                Alwaha Tomato
-              </span>
-            </div>
-
-            <div>
-              <span
-                className="mb-4 inline-block rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]"
-                style={{
-                  backgroundColor: 'rgba(184,134,11,0.12)',
-                  border: '1px solid rgba(184,134,11,0.4)',
-                  color: '#b8860b',
-                  fontFamily: 'var(--font-dm-sans), sans-serif',
-                }}
-              >
-                Our Flagship Export
-              </span>
-
-              <h2
-                className="mb-5 text-3xl font-bold leading-snug md:text-4xl"
-                style={{ fontFamily: 'var(--font-playfair), serif', color: '#1a3a22' }}
-              >
-                Alwaha Tomato - Grown in the Highlands, Trusted Worldwide
-              </h2>
-
-              <p
-                className="mb-6 text-base leading-relaxed md:text-lg"
-                style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: '#4a5c4e', lineHeight: 1.75 }}
-              >
-                Our premium Alwaha Tomato brand is cultivated exclusively on our Cameron Highlands farm and exported to Thailand, Singapore and Australia.
-              </p>
-
-              
-                href="https://wa.me/60102552554?text=Hi%20Agrigentech%2C%20I%27d%20like%20to%20enquire%20about%20Alwaha%20Tomato"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-md px-7 py-3 text-sm font-semibold tracking-wide transition-all duration-200 hover:brightness-110"
-                style={{ backgroundColor: '#1a3a22', color: '#f5f0e8', fontFamily: 'var(--font-dm-sans), sans-serif', letterSpacing: '0.04em' }}
-              >
-                Enquire About Alwaha Tomato
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    
       <FeaturedProducts />
       <RetailStores />
     </>
